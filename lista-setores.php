@@ -21,27 +21,28 @@ include_once './include/header.php';
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>1</td>
-              <td>Dado A</td>
-              <td>1</td>
-              <td>Verde</td>
+          <?php
+                // montando o SQL que seá executado no banco de dados
+                $sql = 'SELECT * FROM setor
+                ORDER BY SetorID ASC;';
+
+                // executar o SQL e guardar o retorno
+                $return = mysqli_query($conexao, $sql);
+
+                //listar todos os dados
+                while($linha = mysqli_fetch_assoc($return)){
+                    echo '<tr>
+              <td>'.$linha['SetorID'].'</td>
+              <td>'.$linha['Nome'].'</td>
+              <td>'.$linha['Andar'].'</td>
+              <td>'.$linha['Cor'].'</td>
               <td>
                 <a href="#" class="btn btn-edit">Editar</a>
                 <a href="#" class="btn btn-delete">Excluir</a>
               </td>
-            </tr>
-            <tr>
-              <td>2</td>
-              <td>Dado B</td>
-              <td>1</td>
-              <td>Verde</td>
-              <td>
-                <a href="#" class="btn btn-edit">Editar</a>
-                <a href="#" class="btn btn-delete">Excluir</a>
-              </td>
-            </tr>
-            
+            </tr>';
+                };
+                ?> 
           </tbody>
         </table>
       </div>

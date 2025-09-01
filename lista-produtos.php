@@ -21,27 +21,29 @@ include_once './include/header.php';
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>1</td>
-            <td>Produto A</td>
-            <td>Categoria A</td>
-            <td>R$ 10,00</td>
-            <td>
-              <a href="#" class="btn btn-edit">Editar</a>
-              <a href="#" class="btn btn-delete">Excluir</a>
-            </td>
-          </tr>
-          <tr>
-            <td>2</td>
-            <td>Produto B</td>
-            <td>Categoria B</td>
-            <td>R$ 20,00</td>
-            <td>
-              <a href="#" class="btn btn-edit">Editar</a>
-              <a href="#" class="btn btn-delete">Excluir</a>
-            </td>
-          </tr>
+        <?php
+                // montando o SQL que seá executado no banco de dados
+                $sql = 'SELECT ProdutoID, p.Nome AS NomeProduto, c.Nome AS NomeCat, Preco FROM produtos AS p
+                INNER JOIN categorias AS c ON p.CategoriaID = c.CategoriaID
+                ORDER BY ProdutoID ASC;';
 
+                // executar o SQL e guardar o retorno
+                $return = mysqli_query($conexao, $sql);
+
+                //listar todos os dados
+                while($linha = mysqli_fetch_assoc($return)){
+                    echo '<tr id="'.$linha['ProdutoID'].'">
+            <td>'.$linha['ProdutoID'].'</td>
+            <td>'.$linha['NomeProduto'].'</td>
+            <td>'.$linha['NomeCat'].'</td>
+            <td>'.'R$ '.number_format($linha['Preco'], 2, ',', '.').'</td>
+            <td>
+              <a href="#" class="btn btn-edit">Editar</a>
+              <a href="#" class="btn btn-delete">Excluir</a>
+            </td>
+          </tr>';
+                };
+                ?>   
         </tbody>
       </table>
     </div>

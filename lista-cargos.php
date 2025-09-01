@@ -21,24 +21,27 @@ include_once './include/header.php';
           </thead>
           <tbody>
             <tr>
-              <td>1</td>
-              <td>Dado A</td>
-              <td>100</td>
+            <?php
+                // montando o SQL que seá executado no banco de dados
+                $sql = 'SELECT * FROM cargos;';
+
+                // executar o SQL e guardar o retorno
+                $return = mysqli_query($conexao, $sql);
+
+                //listar todos os dados
+                while($linha = mysqli_fetch_assoc($return)){
+                    echo '<tr>
+              <td>'.$linha['CargoID'].'</td>
+              <td>'.$linha['Nome'].'</td>
+              <td>'.'R$ '.number_format($linha['TetoSalarial'], 2, ',', '.').'</td>
+
               <td>
-                <a href="salvar-cargos.php?id=" class="btn btn-edit">Editar</a>
+                <a href="#" class="btn btn-edit">Editar</a>
                 <a href="#" class="btn btn-delete">Excluir</a>
               </td>
-            </tr>
-            <tr>
-              <td>2</td>
-              <td>Dado B</td>
-              <td>250</td>
-              <td>
-                <a href="salvar-cargos.php?id=" class="btn btn-edit">Editar</a>
-                <a href="#" class="btn btn-delete">Excluir</a>
-              </td>
-            </tr>
-            
+            </tr>';
+                };
+                ?>   
           </tbody>
         </table>
       </div> 

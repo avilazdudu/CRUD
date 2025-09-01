@@ -21,27 +21,27 @@ include_once './include/header.php';
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>1</td>
-            <td>Funcionário A</td>
-            <td>Cargo A</td>
-            <td>Setor A</td>
+          <?php
+          $sql = 'SELECT FuncionarioID ,f.Nome AS nomeFunc, s.Nome As nomeSetor, c.Nome AS nomeCargo FROM funcionarios AS f
+          INNER JOIN cargos AS c ON f.CargoID = c.CargoID
+          INNER JOIN setor AS s ON f.SetorID = s.SetorID
+          ORDER BY FuncionarioID ASC;';
+
+          $return = mysqli_query($conexao, $sql);
+
+          while($linha = mysqli_fetch_assoc($return)){
+            echo '<tr id="'.$linha['FuncionarioID'].'">
+                <td>'.$linha['FuncionarioID'].'</td>
+            <td>'.$linha['nomeFunc'].'</td>
+            <td>'.$linha['nomeCargo'].'</td>
+            <td>'.$linha['nomeSetor'].'</td>
             <td>
               <a href="#" class="btn btn-edit">Editar</a>
               <a href="#" class="btn btn-delete">Excluir</a>
             </td>
-          </tr>
-          <tr>
-            <td>2</td>
-            <td>Funcionário B</td>
-            <td>Cargo B</td>
-            <td>Setor B</td>
-            <td>
-              <a href="#" class="btn btn-edit">Editar</a>
-              <a href="#" class="btn btn-delete">Excluir</a>
-            </td>
-          </tr>
-          
+          </tr>';
+          }
+          ?>
         </tbody>
       </table>
     </div>

@@ -14,33 +14,36 @@ include_once './include/header.php';
             <tr>
               <th>ID</th>
               <th>Produto</th>
-              <th>Quantidade</th>
               <th>Data</th>
+              <th>Produtor</th>
               <th>Ações</th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>1</td>
-              <td>Produto A</td>
-              <td>100</td>
-              <td>2025-04-10</td>
+          <?php
+          $sql = 'SELECT ProducaoID, DataProducao ,f.Nome AS NomeFunc, p.Nome AS NomeProduto FROM producao
+          INNER JOIN produtos AS p ON producao.ProdutoID = p.ProdutoID
+          INNER JOIN funcionarios AS f ON producao.FuncionarioID = f.FuncionarioID
+          ORDER BY ProducaoID ASC;';
+
+          $return = mysqli_query($conexao, $sql);
+
+          $min = 1;
+          $max = 50;
+
+          while($linha = mysqli_fetch_assoc($return)){
+            echo ' <tr id="'.$linha['ProducaoID'].'">
+              <td>'.$linha['ProducaoID'].'</td>
+              <td>'.$linha['NomeProduto'].'</td>
+              <td>'.$linha['DataProducao'].'</td>
+              <td>'.$linha['NomeFunc'].'</td>
               <td>
                 <a href="#" class="btn btn-edit">Editar</a>
                 <a href="#" class="btn btn-delete">Excluir</a>
               </td>
-            </tr>
-            <tr>
-              <td>2</td>
-              <td>Produto B</td>
-              <td>250</td>
-              <td>2025-04-12</td>
-              <td>
-                <a href="#" class="btn btn-edit">Editar</a>
-                <a href="#" class="btn btn-delete">Excluir</a>
-              </td>
-            </tr>
-            
+            </tr>';
+          }
+          ?>
           </tbody>
         </table>
       </div>
