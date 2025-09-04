@@ -38,7 +38,7 @@ include_once './include/header.php';
             <td>'.$linha['NomeCat'].'</td>
             <td>'.'R$ '.number_format($linha['Preco'], 2, ',', '.').'</td>
             <td>
-              <a href="#" class="btn btn-edit">Editar</a>
+              <a href="./salvar-produtos.php?id='.$linha['ProdutoID'].'" class="btn btn-edit">Editar</a>
               <a href="#" class="btn btn-delete">Excluir</a>
             </td>
           </tr>';

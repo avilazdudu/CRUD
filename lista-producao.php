@@ -15,7 +15,7 @@ include_once './include/header.php';
               <th>ID</th>
               <th>Produto</th>
               <th>Data</th>
-              <th>Produtor</th>
+              <th>Funcionário</th>
               <th>Ações</th>
             </tr>
           </thead>
@@ -38,7 +38,7 @@ include_once './include/header.php';
               <td>'.$linha['DataProducao'].'</td>
               <td>'.$linha['NomeFunc'].'</td>
               <td>
-                <a href="#" class="btn btn-edit">Editar</a>
+                <a href="./salvar-producao.php?id='.$linha['ProducaoID'].'" class="btn btn-edit">Editar</a>
                 <a href="#" class="btn btn-delete">Excluir</a>
               </td>
             </tr>';

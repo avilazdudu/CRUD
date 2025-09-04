@@ -16,6 +16,18 @@ include_once './include/header.php';
           <textarea placeholder="Descrição"></textarea>
           <select>
             <option value="">Categoria</option>
+            <?php
+           $sql = 'SELECT p.ProdutoID, c.CategoriaID as CategoriaID , p.Nome AS NomeProduto, c.Nome AS NomeCat, Preco FROM produtos AS p
+           INNER JOIN categorias AS c ON p.CategoriaID = c.CategoriaID
+           GROUP BY c.Nome
+           ORDER BY ProdutoID ASC;';
+
+           $return = mysqli_query($conexao, $sql);
+
+           while($linha = mysqli_fetch_assoc($return)){
+            echo '<option id="'.$linha['CategoriaID'].'">'.$linha['NomeCat'].'</option>';
+           }
+          ?>
           </select>
           <button type="submit">Salvar</button>
         </form>

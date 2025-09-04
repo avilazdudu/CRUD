@@ -36,7 +36,7 @@ include_once './include/header.php';
             <td>'.$linha['nomeCargo'].'</td>
             <td>'.$linha['nomeSetor'].'</td>
             <td>
-              <a href="#" class="btn btn-edit">Editar</a>
+              <a href="./salvar-funcionarios.php?id='.$linha['FuncionarioID'].'" class="btn btn-edit">Editar</a>
               <a href="#" class="btn btn-delete">Excluir</a>
             </td>
           </tr>';

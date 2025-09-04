@@ -28,12 +28,12 @@ include_once './include/header.php';
 
                 //listar todos os dados
                 while($linha = mysqli_fetch_assoc($return)){
-                    echo '<tr>
+                    echo '<tr id="'.$linha['CategoriaID'].'">
               <td>'.$linha['CategoriaID'].'</td>
               <td>'.$linha['Nome'].'</td>
 
               <td>
-                <a href="#" class="btn btn-edit">Editar</a>
+                <a href="./salvar-categorias.php?id='.$linha['CategoriaID'].'" class="btn btn-edit">Editar</a>
                 <a href="#" class="btn btn-delete">Excluir</a>
               </td>
             </tr>';

@@ -31,13 +31,13 @@ include_once './include/header.php';
 
                 //listar todos os dados
                 while($linha = mysqli_fetch_assoc($return)){
-                    echo '<tr>
+                    echo '<tr id="'.$linha['SetorID'].'">
               <td>'.$linha['SetorID'].'</td>
               <td>'.$linha['Nome'].'</td>
               <td>'.$linha['Andar'].'</td>
               <td>'.$linha['Cor'].'</td>
               <td>
-                <a href="#" class="btn btn-edit">Editar</a>
+                <a href="./salvar-setores.php?id='.$linha['SetorID'].'" class="btn btn-edit">Editar</a>
                 <a href="#" class="btn btn-delete">Excluir</a>
               </td>
             </tr>';

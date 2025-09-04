@@ -30,13 +30,13 @@ include_once './include/header.php';
 
                 //listar todos os dados
                 while($linha = mysqli_fetch_assoc($return)){
-                    echo '<tr>
+                    echo '<tr id="'.$linha['CargoID'].'">
               <td>'.$linha['CargoID'].'</td>
               <td>'.$linha['Nome'].'</td>
               <td>'.'R$ '.number_format($linha['TetoSalarial'], 2, ',', '.').'</td>
 
               <td>
-                <a href="#" class="btn btn-edit">Editar</a>
+                <a href="./salvar-cargos.php?id='.$linha['CargoID'].'" class="btn btn-edit">Editar</a>
                 <a href="#" class="btn btn-delete">Excluir</a>
               </td>
             </tr>';
