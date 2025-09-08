@@ -3,6 +3,18 @@
 include_once './include/logado.php';
 include_once './include/conexao.php';
 include_once './include/header.php';
+
+// captura o ID na query string
+$id = $_GET['id'];
+// montar o SQL
+$sql = 'SELECT f.FuncionarioID AS FuncionarioID, f.CargoID AS CargoID,f.Nome AS nomeFunc,DataNascimento,Email,CPF, RG, Salario, c.Nome AS nomeCargo FROM funcionarios AS f
+            INNER JOIN cargos AS c ON f.CargoID = c.CargoID
+            WHERE FuncionarioID ='.$id;
+// executar o SQL
+
+$return = mysqli_query($conexao, $sql);
+// pegar os dados e vai deixar dentro do array 
+$dados = mysqli_fetch_assoc($return);
 ?>
 
   
@@ -11,17 +23,17 @@ include_once './include/header.php';
     <div id="funcionarios" class="tela">
         <form class="crud-form">
           <h2>Cadastro de Funcionários</h2>
-          <input type="text" placeholder="Nome">
-          <input type="date" placeholder="Data de Nascimento">
-          <input type="email" placeholder="Email">
-          <input type="number" placeholder="Salário">
+          <input type="text" placeholder="Nome" value="<?php echo $dados['nomeFunc']?>">
+          <input type="date" placeholder="Data de Nascimento" value="<?php echo $dados['DataNascimento']?>">
+          <input type="email" placeholder="Email" value="<?php echo $dados['Email']?>">
+          <input type="number" placeholder="Salário" value="<?php echo $dados['Salario']?>">
           <select>
             <option value="">Sexo</option>
             <option value="M">Masculino</option>
             <option value="F">Feminino</option>
           </select>
-          <input type="text" placeholder="CPF">
-          <input type="text" placeholder="RG">
+          <input type="text" placeholder="CPF" value="<?php echo $dados['CPF']?>">
+          <input type="text" placeholder="RG" value="<?php echo $dados['RG']?>">
           <select>
             <option value="">Cargo</option>
             <?php

@@ -14,16 +14,17 @@ include_once './include/header.php';
             <tr>
               <th>ID</th>
               <th>Produto</th>
-              <th>Data</th>
+              <th>Clientes</th>
               <th>Funcionário</th>
               <th>Ações</th>
             </tr>
           </thead>
           <tbody>
           <?php
-          $sql = 'SELECT ProducaoID, DataProducao ,f.Nome AS NomeFunc, p.Nome AS NomeProduto FROM producao
+          $sql = 'SELECT ProducaoID,c.Nome AS NomeCliente, DataProducao ,f.Nome AS NomeFunc, p.Nome AS NomeProduto FROM producao
           INNER JOIN produtos AS p ON producao.ProdutoID = p.ProdutoID
           INNER JOIN funcionarios AS f ON producao.FuncionarioID = f.FuncionarioID
+          INNER JOIN clientes AS c ON producao.ClienteID = c.ClienteID
           ORDER BY ProducaoID ASC;';
 
           $return = mysqli_query($conexao, $sql);
@@ -35,7 +36,7 @@ include_once './include/header.php';
             echo ' <tr id="'.$linha['ProducaoID'].'">
               <td>'.$linha['ProducaoID'].'</td>
               <td>'.$linha['NomeProduto'].'</td>
-              <td>'.$linha['DataProducao'].'</td>
+              <td>'.$linha['NomeCliente'].'</td>
               <td>'.$linha['NomeFunc'].'</td>
               <td>
                 <a href="./salvar-producao.php?id='.$linha['ProducaoID'].'" class="btn btn-edit">Editar</a>
