@@ -10,13 +10,27 @@ $id = $_GET['id'];
 // validacao
 switch ($acao) {
     case 'excluir':
-        $sql = 'DELETE FROM produtos WHERE ProdutoID ='.$id;
-        mysqli_query($conexao, $sql);
-        header("Location: ../lista-produtos.php");
+        // Verificar se o produto está sendo referenciado em outra tabela
+        // Substituir o SQL abaixo por verificações reais, se necessário
+        $checkSql = 'SELECT COUNT(*) AS total FROM producao WHERE ProdutoID = '.$id;
+        $checkResult = mysqli_query($conexao, $checkSql);
+        $checkRow = mysqli_fetch_assoc($checkResult);
+
+        if ($checkRow['total'] > 0) {
+            // Exibir alerta de erro via JavaScript
+            echo "<script>
+                    alert('O produto não pode ser excluído porque está sendo utilizado em outra tabela.');
+                    window.location.href = '../lista-produtos.php';
+                  </script>";
+        } else {
+            // Excluir o produto
+            $sql = 'DELETE FROM produtos WHERE ProdutoID = '.$id;
+            mysqli_query($conexao, $sql);
+            header("Location: ../lista-produtos.php?sucesso=produto_excluido");
+        }
         break;
     
     default:
-        # code...
         break;
 }
 ?>

@@ -8,6 +8,11 @@ include_once './include/header.php';
 <main>
 
   <div class="container">
+      <?php if (isset($_GET['erro']) && $_GET['erro'] === 'produto_em_uso'): ?>
+        <div class="alert alert-error">
+          O produto não pode ser excluído porque está sendo utilizado em outra tabela.
+        </div>
+      <?php endif; ?>
       <h1>Lista de Produtos</h1>
       <a href="./salvar-produtos.php" class="btn btn-add">Incluir</a> 
       <table>

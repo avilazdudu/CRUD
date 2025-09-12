@@ -7,6 +7,11 @@ include_once './include/header.php';
   <main>
 
     <div class="container">
+        <?php if (isset($_GET['erro']) && $_GET['erro'] === 'categoria_em_uso'): ?>
+          <div class="alert alert-error">
+            A categoria não pode ser excluída porque está sendo utilizada em outra tabela.
+          </div>
+        <?php endif; ?>
         <h1>Lista de Categorias</h1>
         <a href="./salvar-categorias.php" class="btn btn-add">Incluir</a>
         <table>

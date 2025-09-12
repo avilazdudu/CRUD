@@ -7,6 +7,11 @@ include_once './include/header.php';
   <main>
 
     <div class="container">
+        <?php if (isset($_GET['erro']) && $_GET['erro'] === 'setor_em_uso'): ?>
+          <div class="alert alert-error">
+            O setor não pode ser excluído porque está sendo utilizado em outra tabela.
+          </div>
+        <?php endif; ?>
         <h1>Lista de Setores</h1>
         <a href="./salvar-setores.php" class="btn btn-add">Incluir</a>
         
