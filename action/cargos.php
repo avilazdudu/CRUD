@@ -5,7 +5,7 @@ include_once   '../include/conexao.php';
 
 // captura a acao dos dados
 $acao = $_GET['acao'];
-$id = intval($_GET['id']); // Garantir que $id seja um número inteiro
+$id = $_GET['id'];
 // validacao
 switch ($acao) {
     case 'excluir':

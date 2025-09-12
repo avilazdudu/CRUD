@@ -12,7 +12,7 @@ include_once './include/header.php';
         <form class="crud-form" method="post" action="">
           <h2>Cadastro de Produção de Produtos</h2>
           <select>
-            <option value="">Funcionário</option>
+            <option value="">- Selecionar Funcionário -</option>
             <?php
             $sqlfunc = 'SELECT ProducaoID, f.FuncionarioID AS FuncionarioID, DataProducao ,f.Nome AS NomeFunc FROM producao
             INNER JOIN funcionarios AS f ON producao.FuncionarioID = f.FuncionarioID
@@ -27,7 +27,7 @@ include_once './include/header.php';
             ?>
           </select>
           <select>
-            <option value="">Produto</option>
+            <option value="">- Selecionar Produto -</option>
             <?php
             $sqlprod = 'SELECT ProducaoID, p.ProdutoID AS ProdutoID, DataProducao ,p.Nome AS NomeProduto FROM producao
             INNER JOIN produtos AS p ON producao.ProdutoID = p.ProdutoID
@@ -43,7 +43,20 @@ include_once './include/header.php';
           </select>
           <label for="">Data da entrega</label>
           <input type="date" placeholder="Data da Entrega">
-          <input type="number" placeholder="Quantidade Produzida">
+          <select name="" id="">
+            <option value="">- Selecionar Cliente -</option>
+            <?php
+            $sql = 'SELECT  c.ClienteID AS ClienteID, c.Nome  AS NomeCliente FROM producao
+            INNER JOIN clientes AS c ON producao.ClienteID = c.ClienteID;
+            GROUP BY c.ClienteID;';
+  
+            $return = mysqli_query($conexao, $sql);
+
+            while($linha = mysqli_fetch_assoc($return)){
+            echo ' <option id="'.$linha['ClienteID'].'">'.$lina['NomeCliente'].'</option>';
+            }
+            ?>
+          </select>
           <button type="submit">Salvar</button>
         </form>
       </div>

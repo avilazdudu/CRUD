@@ -5,14 +5,20 @@ include_once './include/conexao.php';
 include_once './include/header.php';
 
 // captura o ID na query string
-$id = $_GET['id'];
-// montar o SQL
-$sql = 'SELECT * FROM cargos WHERE CargoID ='.$id;
-// executar o SQL
+$id = isset($_GET['id']) ? intval($_GET['id']) : null;
 
-$return = mysqli_query($conexao, $sql);
-// pegar os dados e vai deixar dentro do array 
-$dados = mysqli_fetch_assoc($return);
+if ($id) {
+    // montar o SQL
+    $sql = 'SELECT * FROM cargos WHERE CargoID = '.$id;
+
+    // executar o SQL
+    $return = mysqli_query($conexao, $sql);
+
+    // pegar os dados e vai deixar dentro do array 
+    $dados = mysqli_fetch_assoc($return);
+} else {
+    $dados = ['Nome' => '', 'TetoSalarial' => ''];
+}
 ?>
   <main>
 
