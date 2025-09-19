@@ -1,17 +1,26 @@
-<?php 
-// include dos arquivos
+<?php
+// include dos arquivox
 include_once './include/logado.php';
 include_once './include/conexao.php';
 include_once './include/header.php';
-$id = $_GET['id'];
-
-$sql = 'SELECT FuncionarioID ,f.SetorID AS FunSID, s.SetorID AS SetSID,f.Nome AS nomeFunc, Sexo, Email, DataNascimento, Salario, CPF, RG, s.Nome As nomeSetor, f.CargoID AS FunCID, c.CargoID As CarCID, c.Nome AS nomeCargo FROM funcionarios AS f
-          INNER JOIN cargos AS c ON f.CargoID = c.CargoID
-          INNER JOIN setor AS s ON f.SetorID = s.SetorID
-          WHERE FuncionarioID ='.$id;
-$return = mysqli_query($conexao, $sql);
-$dados = mysqli_fetch_assoc($return);
-
+ 
+// variaveis vazias
+$nome = '';
+$tetosalarial = '';
+// verifica se existe o id na url
+if( isset($_GET['id']) ){
+  // pega o id
+  $id = $_GET['id'];
+  // monta o sql
+  $sql = "SELECT CargoID, Nome, TetoSalarial FROM cargos WHERE CargoID = $id;";
+  // executa o sql
+  $resultado = mysqli_query($conexao, $sql);
+  // pega o resultado
+  $row = mysqli_fetch_assoc($resultado);
+  // preenche o valo na variavel
+  $nome = $row['Nome'];
+  $tetosalarial = $row['TetoSalarial'];
+}
 ?>
   <main>
     <div id="funcionarios" class="tela">

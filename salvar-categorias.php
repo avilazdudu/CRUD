@@ -1,23 +1,25 @@
-<?php 
-// include dos arquivos
+<?php
+// include dos arquivox
 include_once './include/logado.php';
 include_once './include/conexao.php';
 include_once './include/header.php';
-
-// captura o ID na query string
-$id = isset($_GET['id']) ? intval($_GET['id']) : null;
-
-if ($id) {
-    // montar o SQL
-    $sql = 'SELECT * FROM categorias WHERE CategoriaID = '.$id;
-
-    // executar o SQL
-    $return = mysqli_query($conexao, $sql);
-
-    // pegar os dados e vai deixar dentro do array 
-    $dados = mysqli_fetch_assoc($return);
-} else {
-    $dados = ['Nome' => '', 'Descricao' => ''];
+ 
+// variaveis vazias
+$nome = '';
+$descricao = '';
+// verifica se existe o id na url
+if( isset($_GET['id']) ){
+  // pega o id
+  $id = $_GET['id'];
+  // monta o sql
+  $sql = 'SELECT CategoriaID, Nome, Descricao FROM categorias WHERE CategoriaID = $id;';
+  // executa o sql
+  $resultado = mysqli_query($conexao, $sql);
+  // pega o resultado
+  $row = mysqli_fetch_assoc($resultado);
+  // preenche o valo na variavel
+  $nome = $row['Nome'];
+  $descricao = $row['Descricao'];
 }
 ?>
   <main>
@@ -25,8 +27,8 @@ if ($id) {
     <div id="categorias" class="tela">
         <form class="crud-form" method="post" action="">
           <h2>Cadastro de Categorias</h2>
-          <input type="text" placeholder="Nome da Categoria" value="<?php echo $dados['Nome']?>">
-          <textarea placeholder="Descrição"><?php echo $dados['Descricao']?></textarea>
+          <input type="text" placeholder="Nome da Categoria" value="<?php echo $nome?>">
+          <textarea placeholder="Descrição"><?php echo $descricao?></textarea>
           <button type="submit">Salvar</button>
         </form>
       </div>
