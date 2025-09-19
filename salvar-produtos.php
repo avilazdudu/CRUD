@@ -31,28 +31,22 @@ if ($id) {
           <input type="text" placeholder="Nome do Produto" value="<?php echo $dados['NomeProduto']?>">
           <input type="number" placeholder="Preço" value="<?php echo $dados['Preco']?>">
           <input type="number" placeholder="Peso (g)" value="<?php echo $dados['Peso']?>">
-          <textarea placeholder="Descrição" value="<?php echo $dados['Descri']?>"></textarea>
+          <textarea placeholder="Descrição"><?php echo $dados['Descri']?></textarea>
           <select>
-            <option value="<?php echo $dados['NomeCat']?>"><?php echo $dados['NomeCat']?></option>
+            <option value="<?php echo $dados['CategoriaID']; ?>"><?php echo $dados['NomeCat']; ?></option>
             <?php
-           $sql = 'SELECT p.ProdutoID, c.CategoriaID as CategoriaID , p.Nome AS NomeProduto, c.Nome AS NomeCat, Preco FROM produtos AS p
-           INNER JOIN categorias AS c ON p.CategoriaID = c.CategoriaID
-           GROUP BY c.Nome
-           ORDER BY ProdutoID ASC;';
-
-           $return = mysqli_query($conexao, $sql);
-
-           while($linha = mysqli_fetch_assoc($return)){
-            echo '<option id="'.$linha['CategoriaID'].'">'.$linha['NomeCat'].'</option>';
-           }
-          ?>
+            $categoriaSQL = 'SELECT CategoriaID, Nome FROM categorias';
+            $categoriaResult = mysqli_query($conexao, $categoriaSQL);
+            while ($linha = mysqli_fetch_assoc($categoriaResult)) {
+                if ($linha['CategoriaID'] != $dados['CategoriaID']) {
+                    echo '<option value="'.$linha['CategoriaID'].'">'.$linha['Nome'].'</option>';
+                }
+            }
+            ?>
           </select>
           <button type="submit">Salvar</button>
         </form>
-      </div>
-
-
-   
+    </div>
   </main>
 
   <?php 

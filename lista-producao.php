@@ -14,14 +14,15 @@ include_once './include/header.php';
             <tr>
               <th>ID</th>
               <th>Produto</th>
-              <th>Clientes</th>
+              <th>Cliente</th>
               <th>Funcionário</th>
+              <th>Data</th>
               <th>Ações</th>
             </tr>
           </thead>
           <tbody>
           <?php
-          $sql = 'SELECT ProducaoID,c.Nome AS NomeCliente, DataProducao ,f.Nome AS NomeFunc, p.Nome AS NomeProduto FROM producao
+          $sql = 'SELECT ProducaoID, c.Nome AS NomeCliente, DataProducao, f.Nome AS NomeFunc, p.Nome AS NomeProduto FROM producao
           INNER JOIN produtos AS p ON producao.ProdutoID = p.ProdutoID
           INNER JOIN funcionarios AS f ON producao.FuncionarioID = f.FuncionarioID
           INNER JOIN clientes AS c ON producao.ClienteID = c.ClienteID
@@ -29,15 +30,14 @@ include_once './include/header.php';
 
           $return = mysqli_query($conexao, $sql);
 
-          $min = 1;
-          $max = 50;
-
-          while($linha = mysqli_fetch_assoc($return)){
-            echo ' <tr id="'.$linha['ProducaoID'].'">
+          while ($linha = mysqli_fetch_assoc($return)) {
+            $dataFormatada = date('d/m/Y', strtotime($linha['DataProducao']));
+            echo '<tr id="'.$linha['ProducaoID'].'">
               <td>'.$linha['ProducaoID'].'</td>
               <td>'.$linha['NomeProduto'].'</td>
               <td>'.$linha['NomeCliente'].'</td>
               <td>'.$linha['NomeFunc'].'</td>
+              <td>'.$dataFormatada.'</td>
               <td>
                 <a href="./salvar-producao.php?id='.$linha['ProducaoID'].'" class="btn btn-edit">Editar</a>
                 <a href="./action/producao.php?id='.$linha['ProducaoID'].'&acao=excluir" class="btn btn-delete">Excluir</a>
@@ -48,9 +48,6 @@ include_once './include/header.php';
           </tbody>
         </table>
       </div>
-
-
-   
   </main>
 
   <?php 

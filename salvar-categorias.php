@@ -26,7 +26,7 @@ if ($id) {
         <form class="crud-form" method="post" action="">
           <h2>Cadastro de Categorias</h2>
           <input type="text" placeholder="Nome da Categoria" value="<?php echo $dados['Nome']?>">
-          <textarea placeholder="Descrição" value="<?php echo $dados['Descricao']?>"></textarea>
+          <textarea placeholder="Descrição"><?php echo $dados['Descricao']?></textarea>
           <button type="submit">Salvar</button>
         </form>
       </div>
