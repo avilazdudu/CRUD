@@ -4,22 +4,36 @@ include_once './include/logado.php';
 include_once './include/conexao.php';
 include_once './include/header.php';
 
-// captura o ID na query string
-$id = isset($_GET['id']) ? intval($_GET['id']) : null;
+$nome = '';
+$preco = '';
+$peso = '';
+$descricao = '';
+$categoria = '';
+$nomeCategoria = '';
 
-if ($id) {
-    // montar o SQL
-    $sql = 'SELECT p.ProdutoID, c.CategoriaID as CategoriaID , p.Nome AS NomeProduto, c.Nome AS NomeCat, Preco, Peso, p.Descricao AS Descri FROM produtos AS p
-            INNER JOIN categorias AS c ON p.CategoriaID = c.CategoriaID
-            WHERE ProdutoID = '.$id;
+if(isset($_GET['id'])){
+  $id = intval($_GET['id']);
 
-    // executar o SQL
-    $return = mysqli_query($conexao, $sql);
+  // busca o produto específico e suas informações
+  $sql = "SELECT p.ProdutoID, p.Nome AS NomeProduto, p.Preco, p.Peso, p.Descricao AS Descricao, p.CategoriaID, c.Nome AS NomeCat
+          FROM produtos AS p
+          INNER JOIN categorias AS c ON p.CategoriaID = c.CategoriaID
+          WHERE p.ProdutoID = $id
+          LIMIT 1";
 
-    // pegar os dados e vai deixar dentro do array 
-    $dados = mysqli_fetch_assoc($return);
-} else {
-    $dados = ['NomeProduto' => '', 'Preco' => '', 'Peso' => '', 'Descri' => '', 'NomeCat' => ''];
+  $resultado = mysqli_query($conexao, $sql);
+  if ($resultado) {
+    $row = mysqli_fetch_assoc($resultado);
+    if ($row) {
+      $nome = isset($row['NomeProduto']) ? $row['NomeProduto'] : '';
+      $preco = isset($row['Preco']) ? $row['Preco'] : '';
+      $peso = isset($row['Peso']) ? $row['Peso'] : '';
+      $descricao = isset($row['Descricao']) ? $row['Descricao'] : '';
+      $categoria = isset($row['CategoriaID']) ? $row['CategoriaID'] : '';
+      $nomeCategoria = isset($row['NomeCat']) ? $row['NomeCat'] : '';
+    }
+  }
+
 }
 ?>
   
@@ -28,22 +42,25 @@ if ($id) {
     <div id="produtos" class="tela">
         <form class="crud-form" action="" method="post">
           <h2>Cadastro de Produtos</h2>
-          <input type="text" placeholder="Nome do Produto" value="<?php echo $dados['NomeProduto']?>">
-          <input type="number" placeholder="Preço" value="<?php echo $dados['Preco']?>">
-          <input type="number" placeholder="Peso (g)" value="<?php echo $dados['Peso']?>">
-          <textarea placeholder="Descrição"><?php echo $dados['Descri']?></textarea>
-          <select>
-            <option value="<?php echo $dados['CategoriaID']; ?>"><?php echo $dados['NomeCat']; ?></option>
+          <input type="text" name="nome" placeholder="Nome do Produto" value="<?php echo htmlspecialchars($nome); ?>">
+          <input type="number" step="0.01" name="preco" placeholder="Preço" value="<?php echo htmlspecialchars($preco); ?>">
+          <input type="number" name="peso" placeholder="Peso (g)" value="<?php echo htmlspecialchars($peso); ?>">
+          <textarea name="descricao" placeholder="Descrição"><?php echo htmlspecialchars($descricao); ?></textarea>
+          <select name="categoria">
+            <option value="">Categoria</option>
+            <?php if ($categoria !== ''): ?>
+              <option value="<?php echo htmlspecialchars($categoria); ?>" selected><?php echo htmlspecialchars($nomeCategoria); ?></option>
+            <?php endif; ?>
             <?php
-            $categoriaSQL = 'SELECT CategoriaID, Nome FROM categorias';
+      $categoriaSQL = 'SELECT CategoriaID, Nome FROM categorias';
             $categoriaResult = mysqli_query($conexao, $categoriaSQL);
-            while ($linha = mysqli_fetch_assoc($categoriaResult)) {
-                if ($linha['CategoriaID'] != $dados['CategoriaID']) {
-                    echo '<option value="'.$linha['CategoriaID'].'">'.$linha['Nome'].'</option>';
-                }
-            }
+      while ($linha = mysqli_fetch_assoc($categoriaResult)) {
+        if ($categoria === '' || $linha['CategoriaID'] != $categoria) {
+          echo '<option value="'.$linha['CategoriaID'].'">'.$linha['Nome'].'</option>';
+        }
+      }
             ?>
-          </select>
+      </select>
           <button type="submit">Salvar</button>
         </form>
     </div>

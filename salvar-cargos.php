@@ -12,7 +12,7 @@ if( isset($_GET['id']) ){
   // pega o id
   $id = $_GET['id'];
   // monta o sql
-  $sql = 'SELECT CargoID, Nome, TetoSalarial FROM cargos WHERE CargoID = $id;';
+  $sql = 'SELECT CargoID, Nome, TetoSalarial FROM cargos WHERE CargoID ='. $id;
   // executa o sql
   $resultado = mysqli_query($conexao, $sql);
   // pega o resultado
