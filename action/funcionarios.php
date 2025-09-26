@@ -1,12 +1,12 @@
 <?php
 // include dos arquivos
-include_once   '../include/logado.php';
-include_once   '../include/conexao.php';
+include_once '../include/logado.php';
+include_once '../include/conexao.php';
 
 // captura a acao dos dados
-$acao = $_GET['acao'];
-$id = $_GET['id'];
-// validacao
+$acao = $_REQUEST['acao'] ?? '';
+$id = isset($_REQUEST['id']) ? intval($_REQUEST['id']) : 0;
+
 switch ($acao) {
     case 'excluir':
         // Verificar se o funcionário está sendo referenciado em outra tabela
@@ -28,7 +28,35 @@ switch ($acao) {
             header("Location: ../lista-funcionarios.php?sucesso=funcionario_excluido");
         }
         break;
-    
+
+    case 'salvar':
+        $nome = mysqli_real_escape_string($conexao, $_POST['nome']);
+        $dataNascimento = mysqli_real_escape_string($conexao, $_POST['dataNascimento']);
+        $email = mysqli_real_escape_string($conexao, $_POST['email']);
+        $salario = mysqli_real_escape_string($conexao, $_POST['salario']);
+        $sexo = mysqli_real_escape_string($conexao, $_POST['sexo']);
+        $cpf = mysqli_real_escape_string($conexao, $_POST['cpf']);
+        $rg = mysqli_real_escape_string($conexao, $_POST['rg']);
+        $cargoID = intval($_POST['cargo']);
+        $setorID = intval($_POST['setor']);
+
+        if ($id > 0) {
+            $sql = "UPDATE funcionarios 
+                    SET Nome = '$nome', DataNascimento = '$dataNascimento', Email = '$email', Salario = '$salario', 
+                        Sexo = '$sexo', CPF = '$cpf', RG = '$rg', CargoID = $cargoID, SetorID = $setorID 
+                    WHERE FuncionarioID = $id";
+        } else {
+            $sql = "INSERT INTO funcionarios (Nome, DataNascimento, Email, Salario, Sexo, CPF, RG, CargoID, SetorID) 
+                    VALUES ('$nome', '$dataNascimento', '$email', '$salario', '$sexo', '$cpf', '$rg', $cargoID, $setorID)";
+        }
+
+        if (!mysqli_query($conexao, $sql)) {
+            die("Erro ao salvar o funcionário: " . mysqli_error($conexao));
+        }
+
+        header("Location: ../lista-funcionarios.php?sucesso=funcionario_salvo");
+        break;
+
     default:
         break;
 }

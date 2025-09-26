@@ -45,7 +45,9 @@ $resClientes = mysqli_query($conexao, $sqlClientes);
   <main>
 
     <div id="producao" class="tela">
-        <form class="crud-form" method="post" action="">
+        <form class="crud-form" method="post" action="./action/producao.php">
+        <input type="hidden" name="acao" value="salvar">
+        <input type="hidden" name="id" value="<?php echo htmlspecialchars($id); ?>">
           <h2>Cadastro de Produção de Produtos</h2>
 
           <label for="cliente">Cliente</label>

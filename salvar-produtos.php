@@ -40,24 +40,22 @@ if(isset($_GET['id'])){
   <main>
 
     <div id="produtos" class="tela">
-        <form class="crud-form" action="" method="post">
+        <form class="crud-form" action="./action/produtos.php" method="post">
+        <input type="hidden" name="acao" value="salvar">
+        <input type="hidden" name="id" value="<?php echo isset($id) ? $id : ''; ?>">
           <h2>Cadastro de Produtos</h2>
-          <input type="text" name="nome" placeholder="Nome do Produto" value="<?php echo htmlspecialchars($nome); ?>">
-          <input type="number" step="0.01" name="preco" placeholder="Preço" value="<?php echo htmlspecialchars($preco); ?>">
-          <input type="number" name="peso" placeholder="Peso (g)" value="<?php echo htmlspecialchars($peso); ?>">
-          <textarea name="descricao" placeholder="Descrição"><?php echo htmlspecialchars($descricao); ?></textarea>
-          <select name="categoria">
+          <input type="text" name="nome" placeholder="Nome do Produto" value="<?php echo htmlspecialchars($nome); ?>" required>
+          <input type="number" step="0.01" name="preco" placeholder="Preço" value="<?php echo htmlspecialchars($preco); ?>" required>
+          <input type="number" name="peso" placeholder="Peso (g)" value="<?php echo htmlspecialchars($peso); ?>" required>
+          <textarea name="descricao" placeholder="Descrição" required><?php echo htmlspecialchars($descricao); ?></textarea>
+          <select name="categoria" required>
             <option value="">Categoria</option>
-            <?php if ($categoria !== ''): ?>
-              <option value="<?php echo htmlspecialchars($categoria); ?>" selected><?php echo htmlspecialchars($nomeCategoria); ?></option>
-            <?php endif; ?>
             <?php
       $categoriaSQL = 'SELECT CategoriaID, Nome FROM categorias';
             $categoriaResult = mysqli_query($conexao, $categoriaSQL);
       while ($linha = mysqli_fetch_assoc($categoriaResult)) {
-        if ($categoria === '' || $linha['CategoriaID'] != $categoria) {
-          echo '<option value="'.$linha['CategoriaID'].'">'.$linha['Nome'].'</option>';
-        }
+        $selected = ($linha['CategoriaID'] == $categoria) ? 'selected' : '';
+        echo '<option value="'.$linha['CategoriaID'].'" '.$selected.'>'.$linha['Nome'].'</option>';
       }
             ?>
       </select>

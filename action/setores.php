@@ -1,12 +1,12 @@
 <?php
 // include dos arquivos
-include_once   '../include/logado.php';
-include_once   '../include/conexao.php';
+include_once '../include/logado.php';
+include_once '../include/conexao.php';
 
 // captura a acao dos dados
-$acao = $_GET['acao'];
-$id = $_GET['id'];
-// validacao
+$acao = $_REQUEST['acao'] ?? '';
+$id = isset($_REQUEST['id']) ? intval($_REQUEST['id']) : 0;
+
 switch ($acao) {
     case 'excluir':
         // Verificar se o setor está sendo referenciado em outra tabela
@@ -27,7 +27,25 @@ switch ($acao) {
             header("Location: ../lista-setores.php?sucesso=setor_excluido");
         }
         break;
-    
+
+    case 'salvar':
+        $nome = mysqli_real_escape_string($conexao, $_POST['nome']);
+        $andar = mysqli_real_escape_string($conexao, $_POST['andar']);
+        $cor = mysqli_real_escape_string($conexao, $_POST['cor']);
+
+        if ($id > 0) {
+            $sql = "UPDATE setor SET Nome = '$nome', Andar = '$andar', Cor = '$cor' WHERE SetorID = $id";
+        } else {
+            $sql = "INSERT INTO setor (Nome, Andar, Cor) VALUES ('$nome', '$andar', '$cor')";
+        }
+
+        if (!mysqli_query($conexao, $sql)) {
+            die("Erro ao salvar o setor: " . mysqli_error($conexao));
+        }
+
+        header("Location: ../lista-setores.php?sucesso=setor_salvo");
+        break;
+
     default:
         break;
 }
